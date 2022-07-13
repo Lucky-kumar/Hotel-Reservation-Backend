@@ -1,63 +1,35 @@
-import React from 'react'
-
-import './featuredProperties.css'
-import useFetch from './../../hooks/useFetch';
-
+import useFetch from "../../hooks/useFetch";
+import "./featuredProperties.css";
 
 const FeaturedProperties = () => {
-  const { data, loading, error } = useFetch("http://localhost:8800/api/hotels/countByType");
+  const { data, loading, error } = useFetch("/hotels?featured=true&limit=4");
 
   return (
     <div className="fp">
-      <div className="fpItem">
-
-        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGhvdGVsfGVufDB8MHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt="property" className='fpImg' />
-        <span className='fpName'>Hotel Inn</span>
-        <span className='fpCity'>New Delhi</span>
-        <span className='fpPrice'>Starting from $120</span>
-        <div className='fpRating'>
-          <button>8.9</button>
-          <span>Excellent</span>
-        </div>
-      </div>
-
-      <div className="fpItem">
-
-        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGhvdGVsfGVufDB8MHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt="property" className='fpImg' />
-        <span className='fpName'>Hotel Inn</span>
-        <span className='fpCity'>New Delhi</span>
-        <span className='fpPrice'>Starting from $120</span>
-        <div className='fpRating'>
-          <button>8.9</button>
-          <span>Excellent</span>
-        </div>
-      </div>
-
-      <div className="fpItem">
-
-        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGhvdGVsfGVufDB8MHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt="property" className='fpImg' />
-        <span className='fpName'>Hotel Inn</span>
-        <span className='fpCity'>New Delhi</span>
-        <span className='fpPrice'>Starting from $120</span>
-        <div className='fpRating'>
-          <button>8.9</button>
-          <span>Excellent</span>
-        </div>
-      </div>
-
-      <div className="fpItem">
-
-        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGhvdGVsfGVufDB8MHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt="property" className='fpImg' />
-        <span className='fpName'>Hotel Inn</span>
-        <span className='fpCity'>New Delhi</span>
-        <span className='fpPrice'>Starting from $120</span>
-        <div className='fpRating'>
-          <button>8.9</button>
-          <span>Excellent</span>
-        </div>
-      </div>
+      {loading ? (
+        "Loading"
+      ) : (
+        <>
+          {data.map((item) => (
+            <div className="fpItem" key={item._id}>
+              <img
+                src={item.photos[0]}
+                alt=""
+                className="fpImg"
+              />
+              <span className="fpName">{item.name}</span>
+              <span className="fpCity">{item.city}</span>
+              <span className="fpPrice">Starting from ${item.cheapestPrice}</span>
+              {item.rating && <div className="fpRating">
+                <button>{item.rating}</button>
+                <span>Excellent</span>
+              </div>}
+            </div>
+          ))}
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default FeaturedProperties
+export default FeaturedProperties;
